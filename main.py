@@ -20,35 +20,43 @@ class GameGUI:
         self.__amount_of_mistakes = 0
         self.__correct_answer = ""
         self.__correct_words = ["xyzz:-)", "kaupunki:D", "SuomiÖ", "moi:)"]
+        self.__game_title = ""
         self.__has_word_been_guessed = False
         self.__is_game_type_multiplayer = False
         self.__list_length = len(self.__correct_words)
         self.__main_window = Tk()
         self.__random_index_value = 0
 
-
-        if self.choose_game_type():
-            self.generate_random_index_value()
-
-        else:
-            self.input_word_to_be_guessed()
+        self.choose_game_type()
 
         self.generate_game_board()
         self.__main_window.mainloop()
 
     def choose_game_type(self):
 
-        self.__singleplayer = Button(self.__main_window, text="Singleplayer")
-        self.__singleplayer.grid(row=0, column=0)
+        self.__game_title = Label(self.__main_window, text="Hangman")
+        self.__game_title.grid(row=0, columnspan=3)
 
-        self.__multiplayer = Button(self.__main_window, text="Multiplayer")
-        self.__multiplayer.grid(row=0, column=1)
+        self.__singleplayer = Button(self.__main_window, text="Singleplayer",
+                                     command=self.generate_random_index_value)
+        self.__singleplayer.grid(row=1, column=0)
+
+        self.__multiplayer = Button(self.__main_window, text="Multiplayer",
+                                    command=self.input_word_to_be_guessed)
+        self.__multiplayer.grid(row=1, column=2)
 
     def generate_random_index_value(self):
+        # self.__is_game_type_multiplayer = False
         self.__random_index_value = randrange(self.__list_length)
 
+    # def testiprintteri(self):
+    #     print("NAPPIA MULTIPLAYER ON PAINETTU!")
+
     def input_word_to_be_guessed(self):
-        pass
+        # self.__is_game_type_multiplayer = True
+        self.__enter_word = Entry()
+        self.__enter_word.grid(row=2, columnspan=3)
+
 
     def generate_game_board(self):
         pass
