@@ -53,13 +53,35 @@ class GameGUI:
     # def testiprintteri(self):
     #     print("NAPPIA MULTIPLAYER ON PAINETTU!")
 
+    def check_if_word_is_correct(self):
+
+        if not self.is_alpha():
+            self.__enter_word.configure(bg='red')
+
+        else:
+            self.__enter_word.configure(bg='white')
+
+
+        # while not self.is_alpha():
+
+
+        # while True:
+        #
+        #     if self.check_if_alpha():
+        #         self.__enter_word.configure(bg='white')
+        #     else:
+        #         self.__enter_word.configure(bg='red')
+        #         return
+
+
+
     def input_word_to_be_guessed(self):
         # self.__is_game_type_multiplayer = True
         self.__enter_word = Entry()
         self.__enter_word.grid(row=2, columnspan=3)
 
         self.__choose_button = Button(self.__main_window, text="Choose",
-                                      command=self.check_if_alpha)
+                                      command=self.check_if_word_is_correct)
         self.__choose_button.grid(row=2, column=3)
 
 
@@ -71,10 +93,16 @@ class GameGUI:
         #     if char.isdigit():
         #         print("Sisälsi numeron!")
 
-    def check_if_alpha(self):
+    def is_alpha(self):
 
         if not self.__enter_word.get().isalpha():
             print("Syötit muita kuin kirjaimia!!!")
+
+            return False
+
+        else:
+            return True
+
 
     def generate_game_board(self):
         pass
