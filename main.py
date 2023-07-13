@@ -19,7 +19,7 @@ class GameGUI:
         # Attributes
         self.__amount_of_mistakes = 0
         self.__correct_answer = ""
-        self.__correct_words = ["xyzz:-)", "kaupunki:D", "SuomiÖ", "moi:)"]
+        self.__correct_words = ["koiruli", "kisse", "rät", "hevone"]
         self.__game_title = ""
         self.__has_word_been_guessed = False
         self.__is_game_type_multiplayer = False
@@ -49,11 +49,16 @@ class GameGUI:
     def generate_random_index_value(self):
         # self.__is_game_type_multiplayer = False
         self.__random_index_value = randrange(self.__list_length)
+        self.__correct_answer = self.__correct_words[self.__random_index_value]
+
+        print(f"Random index value: {self.__random_index_value}")
+        print(self.__correct_words[self.__random_index_value])
 
     # def testiprintteri(self):
     #     print("NAPPIA MULTIPLAYER ON PAINETTU!")
 
-    def check_if_word_is_correct(self):
+    def check_if_word_is_legal(self):
+        # print(f"Enter wordin arvo: {self.__enter_word.get()}")
 
         if not self.is_alpha():
             self.__enter_word.configure(bg='red')
@@ -62,7 +67,8 @@ class GameGUI:
             self.__enter_word.configure(bg='white')
 
 
-        # while not self.is_alpha():
+
+            # while not self.is_alpha():
 
 
         # while True:
@@ -79,10 +85,11 @@ class GameGUI:
         # self.__is_game_type_multiplayer = True
         self.__enter_word = Entry()
         self.__enter_word.grid(row=2, columnspan=3)
-
+        # self.__correct_answer = self.__enter_word.get()
         self.__choose_button = Button(self.__main_window, text="Choose",
-                                      command=self.check_if_word_is_correct)
+                                      command=self.check_if_word_is_legal)
         self.__choose_button.grid(row=2, column=3)
+
 
 
 
@@ -103,9 +110,34 @@ class GameGUI:
         else:
             return True
 
-
     def generate_game_board(self):
-        pass
+
+        keyboard = [["q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "å"],
+                    ["a", "s", "d", "f", "g", "h", "j", "k", "l", "ö", "ä"],
+                    ["z", "x", "c", "v", "b", "n", "m"]]
+
+        current_row = 3
+        current_column = 3
+        for row in keyboard:
+            if current_row == 5:
+                current_column = 5
+
+            # self.__another_button = Button(self.__main_window, text=)
+            for char in row:
+
+                self.__new_button = Button(self.__main_window, text=char)
+                self.__new_button.grid(row=current_row+1,
+                                       column=current_column+1)
+                current_column += 1
+            current_column = 3
+            current_row += 1
+        # current_column = 5
+
+        # self.__button_q = Button(self.__main_window, text="Q")
+        # self.__button_q.grid()
+        #
+        # self.__button_w = Button(self.__main_window, text="W")
+        # self.__button_w.grid()
 
 
 def main():
