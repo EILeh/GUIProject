@@ -26,6 +26,7 @@ class GameGUI:
         self.__list_length = len(self.__correct_words)
         self.__main_window = Tk()
         self.__random_index_value = 0
+        self.__enter_word = Entry()
 
         self.choose_game_type()
 
@@ -57,6 +58,23 @@ class GameGUI:
         self.__enter_word = Entry()
         self.__enter_word.grid(row=2, columnspan=3)
 
+        self.__choose_button = Button(self.__main_window, text="Choose",
+                                      command=self.check_if_alpha)
+        self.__choose_button.grid(row=2, column=3)
+
+
+
+        # lista = []
+        # lista.append(self.__enter_word) # [sana]
+        #
+        # for char in temp_str:
+        #     if char.isdigit():
+        #         print("Sisälsi numeron!")
+
+    def check_if_alpha(self):
+
+        if not self.__enter_word.get().isalpha():
+            print("Syötit muita kuin kirjaimia!!!")
 
     def generate_game_board(self):
         pass
