@@ -45,7 +45,7 @@ class GameGUI:
 
         # Lists
         self.__correct_words = ["koiruli", "kisse", "rät", "hevone"]
-        self.__keyboard = []
+        self.__keyboard = {}
 
         # Strings
         self.__correct_answer = ""
@@ -60,6 +60,8 @@ class GameGUI:
         self.choose_game_type()
 
         self.generate_game_board()
+
+        self.letter_button_click()
 
         if self.__was_inputted_word_legal:
             print("Arvo oli laillinen.")
@@ -171,10 +173,11 @@ class GameGUI:
             # self.__another_button = Button(self.__main_window, text=)
             for char in row:
 
-                self.__new_button = Button(self.__main_window, text=char)
+                self.__new_button = Button(self.__main_window, text=char,
+                                           command=self.letter_button_click)
                 self.__new_button.grid(row=current_row+1,
                                        column=current_column+1)
-                self.__keyboard.append(self.__new_button)
+                self.__keyboard[char] = self.__new_button
                 current_column += 1
             current_column = 3
             current_row += 1
@@ -185,6 +188,17 @@ class GameGUI:
         #
         # self.__button_w = Button(self.__main_window, text="W")
         # self.__button_w.grid()
+
+    def letter_button_click(self):
+
+        letter = "a"
+        # print(f"Kirjaimen A sijainti: {self.__keyboard.index(letter).get()}")
+
+        # for i in self.__keyboard:
+        #     print(f"{self.__keyboard[i.get()]}")
+
+        # for letter in self.__keyboard:
+        #     self.__keyboard.index(letter)
 
 
 def main():
