@@ -157,14 +157,14 @@ class GameGUI:
 
     def generate_game_board(self):
 
-        self.__keyboard = [["q", "w", "e", "r", "t", "y", "u", "i", "o", "p",
+        letters = [["q", "w", "e", "r", "t", "y", "u", "i", "o", "p",
                           "å"],
                     ["a", "s", "d", "f", "g", "h", "j", "k", "l", "ö", "ä"],
                     ["z", "x", "c", "v", "b", "n", "m"]]
 
         current_row = 3
         current_column = 3
-        for row in self.__keyboard:
+        for row in letters:
             if current_row == 5:
                 current_column = 5
 
@@ -174,6 +174,7 @@ class GameGUI:
                 self.__new_button = Button(self.__main_window, text=char)
                 self.__new_button.grid(row=current_row+1,
                                        column=current_column+1)
+                self.__keyboard.append(self.__new_button)
                 current_column += 1
             current_column = 3
             current_row += 1
