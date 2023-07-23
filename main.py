@@ -61,8 +61,6 @@ class GameGUI:
 
         self.generate_game_board()
 
-        self.letter_button_click()
-
         if self.__was_inputted_word_legal:
             print("Arvo oli laillinen.")
 
@@ -110,10 +108,7 @@ class GameGUI:
                 print("Arvo oli laillinen.")
                 return
 
-
-
             # while not self.is_alpha():
-
 
         # while True:
         #
@@ -122,9 +117,6 @@ class GameGUI:
         #     else:
         #         self.__enter_word.configure(bg='red')
         #         return
-
-
-
 
     def input_word_to_be_guessed(self):
         # self.__is_game_type_multiplayer = True
@@ -136,9 +128,6 @@ class GameGUI:
         self.__choose_button.grid(row=2, column=3)
         # if self.__was_inputted_word_legal:
         #     print("Arvo oli laillinen.")
-
-
-
 
         # lista = []
         # lista.append(self.__enter_word) # [sana]
@@ -160,9 +149,9 @@ class GameGUI:
     def generate_game_board(self):
 
         letters = [["q", "w", "e", "r", "t", "y", "u", "i", "o", "p",
-                          "å"],
-                    ["a", "s", "d", "f", "g", "h", "j", "k", "l", "ö", "ä"],
-                    ["z", "x", "c", "v", "b", "n", "m"]]
+                    "å"],
+                   ["a", "s", "d", "f", "g", "h", "j", "k", "l", "ö", "ä"],
+                   ["z", "x", "c", "v", "b", "n", "m"]]
 
         current_row = 3
         current_column = 3
@@ -172,11 +161,12 @@ class GameGUI:
 
             # self.__another_button = Button(self.__main_window, text=)
             for char in row:
-
                 self.__new_button = Button(self.__main_window, text=char,
-                                           command=self.letter_button_click)
-                self.__new_button.grid(row=current_row+1,
-                                       column=current_column+1)
+                                           command=self.on_button_click)
+                self.__new_button.config(command=lambda b=self.__new_button:
+                                         self.on_button_click(b))
+                self.__new_button.grid(row=current_row + 1,
+                                       column=current_column + 1)
                 self.__keyboard[char] = self.__new_button
                 current_column += 1
             current_column = 3
@@ -189,16 +179,12 @@ class GameGUI:
         # self.__button_w = Button(self.__main_window, text="W")
         # self.__button_w.grid()
 
-    def letter_button_click(self):
+    def on_button_click(self, button):
 
-        letter = "a"
-        # print(f"Kirjaimen A sijainti: {self.__keyboard.index(letter).get()}")
-
-        # for i in self.__keyboard:
-        #     print(f"{self.__keyboard[i.get()]}")
-
-        # for letter in self.__keyboard:
-        #     self.__keyboard.index(letter)
+        for index, btn in self.__keyboard.items():
+            if btn == button:
+                print(f"Button {index} was clicked.")
+                break
 
 
 def main():
