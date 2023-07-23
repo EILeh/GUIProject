@@ -8,6 +8,21 @@ Email:     eetu.kuittinen@tuni.fi
 StudentId: 151309919
 Name:      Elli Lehtimäki
 Email:     elli.i.lehtimaki@tuni.fi
+
+This game is a Python implementation of the game classic "The Hangman". This
+implementation is developed using Python 3.10 with tkinter in the front-end.
+
+The game starts by asking whether the player wants to by play himself/herself or
+with someone. If the player chooses to play alone, the game will randomly
+select a word from a pre-determined list of words. This is done by generating a
+random value using randrange and then choosing the word in the corresponding
+index on the list. If the player plays with someone, the other person decides
+the word to be guessed by inputting it into a tkinter Entry object.
+
+The player inputs letters by clicking on tkinter buttons with letters on
+them. In case of clicking a correct letter, the game will insert it into text
+box (in alphabetical order). If the letter is incorrect, the letter gets
+disabled and cannot be clicked again.
 """
 
 from random import randrange
@@ -16,19 +31,31 @@ from tkinter import *
 
 class GameGUI:
     def __init__(self):
-        # Attributes
-        self.__amount_of_mistakes = 0
-        self.__correct_answer = ""
-        self.__correct_words = ["koiruli", "kisse", "rät", "hevone"]
-        self.__keyboard = []
-        self.__game_title = ""
+        # ATTRIBUTES
+
+        # Booleans
         self.__has_word_been_guessed = False
         self.__is_game_type_multiplayer = False
         self.__was_inputted_word_legal = False
-        self.__list_length = len(self.__correct_words)
-        self.__main_window = Tk()
+
+        # Integers
+        self.__amount_of_mistakes = 0
+        self.__list_length = 0
         self.__random_index_value = 0
+
+        # Lists
+        self.__correct_words = ["koiruli", "kisse", "rät", "hevone"]
+        self.__keyboard = []
+
+        # Strings
+        self.__correct_answer = ""
+        self.__game_title = ""
+
+        # tkinter objects
+        self.__main_window = Tk()
         self.__enter_word = Entry()
+
+        self.__list_length = len(self.__correct_words)
 
         self.choose_game_type()
 
@@ -37,10 +64,7 @@ class GameGUI:
         if self.__was_inputted_word_legal:
             print("Arvo oli laillinen.")
 
-
         self.__main_window.mainloop()
-
-
 
     def choose_game_type(self):
 
