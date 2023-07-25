@@ -57,9 +57,9 @@ class GameGUI:
 
         self.__list_length = len(self.__correct_words)
 
-        self.choose_game_type()
+        self.generate_random_index_value()
 
-        self.generate_game_board()
+        self.choose_game_type()
 
         if self.__was_inputted_word_legal:
             print("Arvo oli laillinen.")
@@ -72,7 +72,7 @@ class GameGUI:
         self.__game_title.grid(row=0, columnspan=3)
 
         self.__singleplayer = Button(self.__main_window, text="Singleplayer",
-                                     command=self.generate_random_index_value)
+                                     command=self.generate_game_board)
         self.__singleplayer.grid(row=1, column=0)
 
         self.__multiplayer = Button(self.__main_window, text="Multiplayer",
@@ -105,6 +105,7 @@ class GameGUI:
             self.__was_inputted_word_legal = True
 
             if self.__was_inputted_word_legal:
+                self.generate_game_board()
                 print("Arvo oli laillinen.")
                 return
 
@@ -126,6 +127,9 @@ class GameGUI:
         self.__choose_button = Button(self.__main_window, text="Choose",
                                       command=self.check_if_word_is_legal)
         self.__choose_button.grid(row=2, column=3)
+
+
+
         # if self.__was_inputted_word_legal:
         #     print("Arvo oli laillinen.")
 
@@ -184,6 +188,7 @@ class GameGUI:
         for index, btn in self.__keyboard.items():
             if btn == button:
                 print(f"Button {index} was clicked.")
+                # self.__enter_word.con
                 break
 
 
