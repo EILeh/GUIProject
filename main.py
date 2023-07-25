@@ -36,7 +36,7 @@ class GameGUI:
 
         # Booleans
         self.__has_word_been_guessed = False
-        self.__is_button_clicked = False
+        # self.__is_button_clicked = False
         self.__is_game_type_multiplayer = False
         self.__was_inputted_word_legal = False
 
@@ -108,6 +108,10 @@ class GameGUI:
 
             if self.__was_inputted_word_legal:
                 self.generate_game_board()
+                # self.__singleplayer["state"] = "disabled"
+                # self.__multiplayer["state"] = "disabled"
+                self.__choose_button["state"] = "disabled"
+                self.__singleplayer["state"] = "disabled"
                 print("Arvo oli laillinen.")
                 return
 
@@ -129,6 +133,7 @@ class GameGUI:
         self.__choose_button = Button(self.__main_window, text="Choose",
                                       command=self.check_if_word_is_legal)
         self.__choose_button.grid(row=2, column=3)
+
 
 
 
@@ -173,6 +178,9 @@ class GameGUI:
                 self.__new_button.grid(row=current_row + 1,
                                        column=current_column + 1)
                 self.__keyboard[char] = self.__new_button
+                self.__multiplayer["state"] = "disabled"
+                self.__singleplayer["state"] = "disabled"
+                self.__enter_word.destroy()
                 current_column += 1
             current_column = 3
             current_row += 1
@@ -188,11 +196,8 @@ class GameGUI:
 
         for index, btn in self.__keyboard.items():
             if btn == button:
-                self.__is_button_clicked = True
-                # btn asetetaan b1["state"] = "disabled"
+                # self.__is_button_clicked = True
                 btn["state"] =  "disabled"
-                # btn.state(['disabled'])
-                # btn.destroy()
                 print(f"Button {index} was clicked.")
                 # self.__enter_word.con
                 break
