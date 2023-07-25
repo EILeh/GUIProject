@@ -27,6 +27,7 @@ disabled and cannot be clicked again.
 
 from random import randrange
 from tkinter import *
+# from tkinter.constants import DISABLED, NORMAL
 
 
 class GameGUI:
@@ -35,6 +36,7 @@ class GameGUI:
 
         # Booleans
         self.__has_word_been_guessed = False
+        self.__is_button_clicked = False
         self.__is_game_type_multiplayer = False
         self.__was_inputted_word_legal = False
 
@@ -152,8 +154,7 @@ class GameGUI:
 
     def generate_game_board(self):
 
-        letters = [["q", "w", "e", "r", "t", "y", "u", "i", "o", "p",
-                    "å"],
+        letters = [["q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "å"],
                    ["a", "s", "d", "f", "g", "h", "j", "k", "l", "ö", "ä"],
                    ["z", "x", "c", "v", "b", "n", "m"]]
 
@@ -187,6 +188,11 @@ class GameGUI:
 
         for index, btn in self.__keyboard.items():
             if btn == button:
+                self.__is_button_clicked = True
+                # btn asetetaan b1["state"] = "disabled"
+                btn["state"] =  "disabled"
+                # btn.state(['disabled'])
+                # btn.destroy()
                 print(f"Button {index} was clicked.")
                 # self.__enter_word.con
                 break
