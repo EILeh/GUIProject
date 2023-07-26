@@ -42,12 +42,15 @@ class GameGUI:
 
         # Integers
         self.__amount_of_mistakes = 0
+        self.__amount_of_quessed_letters = 0
         self.__list_length = 0
         self.__random_index_value = 0
+        self.__word_appearance_counter = 0
 
         # Lists
         self.__correct_words = ["koiruli", "kisse", "rät", "hevone"]
         self.__keyboard = {}
+        self.__list_of_correct_letters = []
 
         # Strings
         self.__correct_answer = ""
@@ -66,6 +69,12 @@ class GameGUI:
         if self.__was_inputted_word_legal:
             print("Arvo oli laillinen.")
 
+        # self.__quit_button = Button(self.__main_window, text="QUIT",
+        #                              command=self.quit)
+        # self.__quit_button.grid(row=1, column=5)
+
+
+
         self.__main_window.mainloop()
 
     def choose_game_type(self):
@@ -81,6 +90,8 @@ class GameGUI:
                                     command=self.input_word_to_be_guessed)
         self.__multiplayer.grid(row=1, column=2)
 
+
+
     def print_a_letter_by_clicking_a_button(self):
         pass
 
@@ -91,6 +102,9 @@ class GameGUI:
 
         print(f"Random index value: {self.__random_index_value}")
         print(self.__correct_words[self.__random_index_value])
+
+        for i in self.__correct_answer:
+            self.__list_of_correct_letters.append(i)
 
     # def testiprintteri(self):
     #     print("NAPPIA MULTIPLAYER ON PAINETTU!")
@@ -116,6 +130,8 @@ class GameGUI:
                 self.__choose_button["state"] = "disabled"
                 self.__singleplayer["state"] = "disabled"
                 print(f"{self.__correct_answer}")
+                # for i in self.__correct_answer:
+                #     self.__list_of_correct_letters.append(i)
                 return
 
             # while not self.is_alpha():
@@ -202,14 +218,64 @@ class GameGUI:
 
     def on_button_click(self, button):
 
+        # for i in self.__correct_answer:
+        #     self.__list_of_correct_letters.append(i)
+
+        index = ""
         for index, btn in self.__keyboard.items():
             if btn == button:
                 # self.__is_button_clicked = True
-                btn["state"] =  "disabled"
+                btn["state"] = "disabled"
                 print(f"Button {index} was clicked.")
                 # self.__enter_word.con
+
+                # if button in correct_answer, hirsipuu ei "kasva",
+                # vaan kyseinen kirjain paljastetaan muuttujasta correct_answer
                 break
 
+        for i in self.__correct_answer:
+            if i == index:
+        # if index in self.__correct_answer:
+        #     # self.__list_of_correct_letters.append(index)
+        #     for i in self.__correct_answer:
+        #         if i == index:
+                self.__word_appearance_counter += 1
+
+        self.__amount_of_quessed_letters += \
+            self.__word_appearance_counter
+        self.was_move_winning_move()
+
+        self.__word_appearance_counter = 0
+
+        if self.__has_word_been_guessed:
+            print("VOITIT")
+
+        else:
+            self.__amount_of_mistakes += 1
+            self.check_amount_of_mistakes()
+            # quit()
+
+    def check_amount_of_mistakes(self):
+        if self.__amount_of_mistakes == 11:
+            print("HÄVISIT")
+            quit()
+
+    def was_move_winning_move(self):
+        # list_of_correct_letters = []
+        # for i in self.__correct_answer:
+        #     self.__list_of_correct_letters.append(i)
+        if self.__amount_of_quessed_letters == len(
+                self.__list_of_correct_letters):
+            self.__has_word_been_guessed = True
+        #     return True
+        #
+        # return False
+
+
+
+
+    def quit(self):
+        self.__main_window.destroy()
 
 def main():
     ui = GameGUI()
