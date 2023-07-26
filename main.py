@@ -103,8 +103,8 @@ class GameGUI:
         print(f"Random index value: {self.__random_index_value}")
         print(self.__correct_words[self.__random_index_value])
 
-        for i in self.__correct_answer:
-            self.__list_of_correct_letters.append(i)
+        # for i in self.__correct_answer:
+        #     self.__list_of_correct_letters.append(i)
 
     # def testiprintteri(self):
     #     print("NAPPIA MULTIPLAYER ON PAINETTU!")
@@ -182,6 +182,9 @@ class GameGUI:
 
     def generate_game_board(self):
 
+        for i in self.__correct_answer:
+            self.__list_of_correct_letters.append(i)
+
         letters = [["q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "å"],
                    ["a", "s", "d", "f", "g", "h", "j", "k", "l", "ö", "ä"],
                    ["z", "x", "c", "v", "b", "n", "m"]]
@@ -245,10 +248,15 @@ class GameGUI:
             self.__word_appearance_counter
         self.was_move_winning_move()
 
-        self.__word_appearance_counter = 0
-
         if self.__has_word_been_guessed:
             print("VOITIT")
+
+        elif self.__word_appearance_counter > 0:
+
+
+            self.__word_appearance_counter = 0
+
+
 
         else:
             self.__amount_of_mistakes += 1
