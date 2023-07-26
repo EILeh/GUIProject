@@ -73,6 +73,20 @@ class GameGUI:
         #                              command=self.quit)
         # self.__quit_button.grid(row=1, column=5)
 
+        self.__first_image = PhotoImage(file="1.png")
+        # self.__first_image_label = Label(self.__main_window,
+        #                                  image=self.__first_image)
+        # self.__first_image_label.grid(row=4, column=0)
+        self.__second_image = PhotoImage(file="2.png")
+        self.__third_image = PhotoImage(file="3.png")
+        self.__fourth_image = PhotoImage(file="4.png")
+        self.__fifth_image = PhotoImage(file="5.png")
+        self.__sixth_image = PhotoImage(file="6.png")
+        self.__seventh_image = PhotoImage(file="7.png")
+        self.__eighth_image = PhotoImage(file="8.png")
+        self.__ninth_image = PhotoImage(file="9.png")
+        self.__tenth_image = PhotoImage(file="10.png")
+        self.__eleventh_image = PhotoImage(file="11.png")
 
 
         self.__main_window.mainloop()
@@ -253,10 +267,7 @@ class GameGUI:
 
         elif self.__word_appearance_counter > 0:
 
-
             self.__word_appearance_counter = 0
-
-
 
         else:
             self.__amount_of_mistakes += 1
@@ -264,9 +275,86 @@ class GameGUI:
             # quit()
 
     def check_amount_of_mistakes(self):
-        if self.__amount_of_mistakes == 11:
+
+        if self.__amount_of_mistakes == 1:
+            self.__first_image_label = Label(self.__main_window,
+                                             image=self.__first_image)
+            self.__first_image_label.grid(row=7, columnspan=1)
+            self.__first_image_label.configure(image=self.__first_image)
+
+        elif self.__amount_of_mistakes == 2:
+            self.__second_image_label = Label(self.__main_window,
+                                             image=self.__second_image)
+            self.__second_image_label.grid(row=7, columnspan=1)
+            self.__second_image_label.configure(image=self.__second_image)
+            self.__first_image_label.destroy()
+
+        elif self.__amount_of_mistakes == 3:
+            self.__third_image_label = Label(self.__main_window,
+                                             image=self.__third_image)
+            self.__third_image_label.grid(row=7, columnspan=1)
+            self.__third_image_label.configure(image=self.__third_image)
+            self.__second_image_label.destroy()
+
+        elif self.__amount_of_mistakes == 4:
+            self.__fourth_image_label = Label(self.__main_window,
+                                             image=self.__fourth_image)
+            self.__fourth_image_label.grid(row=7, columnspan=1)
+            self.__fourth_image_label.configure(image=self.__fourth_image)
+            self.__third_image_label.destroy()
+
+        elif self.__amount_of_mistakes == 5:
+            self.__fifth_image_label = Label(self.__main_window,
+                                             image=self.__fifth_image)
+            self.__fifth_image_label.grid(row=7, columnspan=1)
+            self.__fifth_image_label.configure(image=self.__fifth_image)
+            self.__fourth_image_label.destroy()
+
+        elif self.__amount_of_mistakes == 6:
+            self.__sixth_image_label = Label(self.__main_window,
+                                             image=self.__sixth_image)
+            self.__sixth_image_label.grid(row=7, columnspan=1)
+            self.__sixth_image_label.configure(image=self.__sixth_image)
+            self.__fifth_image_label.destroy()
+
+        elif self.__amount_of_mistakes == 7:
+            self.__seventh_image_label = Label(self.__main_window,
+                                             image=self.__seventh_image)
+            self.__seventh_image_label.grid(row=7, columnspan=1)
+            self.__seventh_image_label.configure(image=self.__seventh_image)
+            self.__sixth_image_label.destroy()
+
+        elif self.__amount_of_mistakes == 8:
+            self.__eighth_image_label = Label(self.__main_window,
+                                             image=self.__eighth_image)
+            self.__eighth_image_label.grid(row=7, columnspan=1)
+            self.__eighth_image_label.configure(image=self.__eighth_image)
+            self.__seventh_image_label.destroy()
+
+        elif self.__amount_of_mistakes == 9:
+            self.__ninth_image_label = Label(self.__main_window,
+                                             image=self.__ninth_image)
+            self.__ninth_image_label.grid(row=7, columnspan=1)
+            self.__ninth_image_label.configure(image=self.__ninth_image)
+            self.__eighth_image_label.destroy()
+
+        elif self.__amount_of_mistakes == 10:
+            self.__tenth_image_label = Label(self.__main_window,
+                                             image=self.__tenth_image)
+            self.__tenth_image_label.grid(row=7, columnspan=1)
+            self.__tenth_image_label.configure(image=self.__tenth_image)
+            self.__ninth_image_label.destroy()
+
+        elif self.__amount_of_mistakes == 11:
+            self.__eleventh_image_label = Label(self.__main_window,
+                                             image=self.__eleventh_image)
+            self.__eleventh_image_label.grid(row=7, columnspan=1)
+            self.__eleventh_image_label.configure(image=self.__eleventh_image)
+            self.__tenth_image_label.destroy()
             print("HÄVISIT")
-            quit()
+            # quit()
+
+
 
     def was_move_winning_move(self):
         # list_of_correct_letters = []
