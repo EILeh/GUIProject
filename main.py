@@ -98,6 +98,8 @@ class GameGUI:
     def check_if_word_is_legal(self):
         # print(f"Enter wordin arvo: {self.__enter_word.get()}")
 
+        self.__correct_answer = self.__enter_word.get()
+
         if not self.is_alpha():
             self.__enter_word.configure(bg='red')
             self.__was_inputted_word_legal = False
@@ -108,11 +110,12 @@ class GameGUI:
 
             if self.__was_inputted_word_legal:
                 self.generate_game_board()
+
                 # self.__singleplayer["state"] = "disabled"
                 # self.__multiplayer["state"] = "disabled"
                 self.__choose_button["state"] = "disabled"
                 self.__singleplayer["state"] = "disabled"
-                print("Arvo oli laillinen.")
+                print(f"{self.__correct_answer}")
                 return
 
             # while not self.is_alpha():
@@ -127,12 +130,16 @@ class GameGUI:
 
     def input_word_to_be_guessed(self):
         # self.__is_game_type_multiplayer = True
-        self.__enter_word = Entry()
+        # self.__enter_word = Entry()
+
         self.__enter_word.grid(row=2, columnspan=3)
+
         # self.__correct_answer = self.__enter_word.get()
         self.__choose_button = Button(self.__main_window, text="Choose",
                                       command=self.check_if_word_is_legal)
         self.__choose_button.grid(row=2, column=3)
+
+        # self.__correct_answer = self.__enter_word.get()
 
 
 
@@ -180,6 +187,7 @@ class GameGUI:
                 self.__keyboard[char] = self.__new_button
                 self.__multiplayer["state"] = "disabled"
                 self.__singleplayer["state"] = "disabled"
+
                 self.__enter_word.destroy()
                 current_column += 1
             current_column = 3
