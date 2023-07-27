@@ -88,10 +88,17 @@ class GameGUI:
         self.__tenth_image = PhotoImage(file="pictures/10.png")
         self.__eleventh_image = PhotoImage(file="pictures/11.png")
 
-
         self.__main_window.mainloop()
 
     def choose_game_type(self):
+        """
+        This method generates all the buttons required for choosing the
+        game type. The buttons are mapped to respective functions and are run
+        based on player choises. If a player clicks multiplayer and then
+        regrets it, it's possible to switch to singleplayer if the player
+        hasn't chosen a word yet. Doesn't take any external parameters, doesn't
+        return anything (returns None implicitely).
+        """
 
         self.__game_title = Label(self.__main_window, text="Hangman")
         self.__game_title.grid(row=0, columnspan=3)
@@ -114,8 +121,9 @@ class GameGUI:
         word. For example, if the value is 1, the correct answer becomes the
         word in the second index. The high limit to this value is the length of
         the list since the random value has to correspond to an existing
-        index on the list of available correct words. Doesn't take any external
-        parameters.
+        index on the list of available correct words. Doesn't take
+        any external parameters, doesn't return anything (returns None
+        implicitely).
         """
 
         # self.__is_game_type_multiplayer = False
@@ -136,8 +144,9 @@ class GameGUI:
         The method checks whether a string is legal. The word is legal
         only if it is alphabetic, i.e. doesn't have any numbers or special
         characters in it. The alphabetic check is done using a seperate method
-        Calls the gameboard generation method if the word
-        was legal. Doesn't take any external parameters.
+        Calls the gameboard generation method if the word was legal. Doesn't
+        take any external parameters, doesn't return anything (returns None
+        implicitely).
         """
 
         # print(f"Enter wordin arvo: {self.__enter_word.get()}")
@@ -172,7 +181,8 @@ class GameGUI:
         game. This method creates the buttons for the multiplayer
         (choose button and the entry/input box). When the co-player clicks
         choose, the word is then run through a check which is done in a seperate
-        method. Doesn't take any external parameters.
+        method. Doesn't take any external parameters, doesn't return anything
+        (returns None implicitely).
         """
 
         # self.__is_game_type_multiplayer = True
@@ -200,7 +210,8 @@ class GameGUI:
     def is_alpha(self):
         """The method checks whether a string is alphabetic. First the method
         gets the string from a tkinter Entry object. The word is then checked
-        with a built-in method of Python class string. """
+        with a built-in method of Python class string. Returns a boolean
+        based on the answer. Doesn't take any external parameters."""
 
         if not self.__enter_word.get().isalpha():
             print("Syötit muita kuin kirjaimia!!!")
@@ -276,7 +287,7 @@ class GameGUI:
 
         self.__amount_of_guessed_letters += \
             self.__word_appearance_counter
-        self.was_move_winning_move()
+        self.was_move_a_winning_move()
 
         if self.__has_word_been_guessed:
             print("VOITIT")
@@ -372,7 +383,7 @@ class GameGUI:
 
 
 
-    def was_move_winning_move(self):
+    def was_move_a_winning_move(self):
         # list_of_correct_letters = []
         # for i in self.__correct_answer:
         #     self.__list_of_correct_letters.append(i)
@@ -384,12 +395,14 @@ class GameGUI:
         # return False
 
     def quit(self):
+        """
+        The method exits the progarm. Takes no external parameters.
+        """
         self.__main_window.destroy()
 
 def main():
     """
     Starts the tkinter program. The program is run totally inside the GUI class.
-    :return:
     """
     ui = GameGUI()
 
