@@ -42,7 +42,7 @@ class GameGUI:
 
         # Integers
         self.__amount_of_mistakes = 0
-        self.__amount_of_quessed_letters = 0
+        self.__amount_of_guessed_letters = 0
         self.__list_length = 0
         self.__random_index_value = 0
         self.__word_appearance_counter = 0
@@ -73,20 +73,20 @@ class GameGUI:
         #                              command=self.quit)
         # self.__quit_button.grid(row=1, column=5)
 
-        self.__first_image = PhotoImage(file="1.png")
+        self.__first_image = PhotoImage(file="pictures/1.png")
         # self.__first_image_label = Label(self.__main_window,
         #                                  image=self.__first_image)
         # self.__first_image_label.grid(row=4, column=0)
-        self.__second_image = PhotoImage(file="2.png")
-        self.__third_image = PhotoImage(file="3.png")
-        self.__fourth_image = PhotoImage(file="4.png")
-        self.__fifth_image = PhotoImage(file="5.png")
-        self.__sixth_image = PhotoImage(file="6.png")
-        self.__seventh_image = PhotoImage(file="7.png")
-        self.__eighth_image = PhotoImage(file="8.png")
-        self.__ninth_image = PhotoImage(file="9.png")
-        self.__tenth_image = PhotoImage(file="10.png")
-        self.__eleventh_image = PhotoImage(file="11.png")
+        self.__second_image = PhotoImage(file="pictures/2.png")
+        self.__third_image = PhotoImage(file="pictures/3.png")
+        self.__fourth_image = PhotoImage(file="pictures/4.png")
+        self.__fifth_image = PhotoImage(file="pictures/5.png")
+        self.__sixth_image = PhotoImage(file="pictures/6.png")
+        self.__seventh_image = PhotoImage(file="pictures/7.png")
+        self.__eighth_image = PhotoImage(file="pictures/8.png")
+        self.__ninth_image = PhotoImage(file="pictures/9.png")
+        self.__tenth_image = PhotoImage(file="pictures/10.png")
+        self.__eleventh_image = PhotoImage(file="pictures/11.png")
 
 
         self.__main_window.mainloop()
@@ -101,15 +101,23 @@ class GameGUI:
         self.__singleplayer.grid(row=1, column=0)
 
         self.__multiplayer = Button(self.__main_window, text="Multiplayer",
-                                    command=self.input_word_to_be_guessed)
+                                    command=self.choose_your_own_word)
         self.__multiplayer.grid(row=1, column=2)
 
-
-
-    def print_a_letter_by_clicking_a_button(self):
-        pass
+    # def print_a_letter_by_clicking_a_button(self):
+    #     pass
 
     def generate_random_index_value(self):
+        """
+        This method generates a random integer value by using random from
+        randrange library. This value later becomes the index of the correct
+        word. For example, if the value is 1, the correct answer becomes the
+        word in the second index. The high limit to this value is the length of
+        the list since the random value has to correspond to an existing
+        index on the list of available correct words. Doesn't take any external
+        parameters.
+        """
+
         # self.__is_game_type_multiplayer = False
         self.__random_index_value = randrange(self.__list_length)
         self.__correct_answer = self.__correct_words[self.__random_index_value]
@@ -123,7 +131,15 @@ class GameGUI:
     # def testiprintteri(self):
     #     print("NAPPIA MULTIPLAYER ON PAINETTU!")
 
-    def check_if_word_is_legal(self):
+    def check_if_string_is_legal(self):
+        """
+        The method checks whether a string is legal. The word is legal
+        only if it is alphabetic, i.e. doesn't have any numbers or special
+        characters in it. The alphabetic check is done using a seperate method
+        Calls the gameboard generation method if the word
+        was legal. Doesn't take any external parameters.
+        """
+
         # print(f"Enter wordin arvo: {self.__enter_word.get()}")
 
         self.__correct_answer = self.__enter_word.get()
@@ -132,6 +148,7 @@ class GameGUI:
             self.__enter_word.configure(bg='red')
             self.__was_inputted_word_legal = False
 
+        # If the program gets here, the word had only letters in it
         else:
             self.__enter_word.configure(bg='white')
             self.__was_inputted_word_legal = True
@@ -148,17 +165,16 @@ class GameGUI:
                 #     self.__list_of_correct_letters.append(i)
                 return
 
-            # while not self.is_alpha():
+    def choose_your_own_word(self):
+        """
+        This method is called when a player chooses to play multiplayer. When
+        this happens, his/her co-player gets to choose the correct word of a
+        game. This method creates the buttons for the multiplayer
+        (choose button and the entry/input box). When the co-player clicks
+        choose, the word is then run through a check which is done in a seperate
+        method. Doesn't take any external parameters.
+        """
 
-        # while True:
-        #
-        #     if self.check_if_alpha():
-        #         self.__enter_word.configure(bg='white')
-        #     else:
-        #         self.__enter_word.configure(bg='red')
-        #         return
-
-    def input_word_to_be_guessed(self):
         # self.__is_game_type_multiplayer = True
         # self.__enter_word = Entry()
 
@@ -166,13 +182,10 @@ class GameGUI:
 
         # self.__correct_answer = self.__enter_word.get()
         self.__choose_button = Button(self.__main_window, text="Choose",
-                                      command=self.check_if_word_is_legal)
+                                      command=self.check_if_string_is_legal)
         self.__choose_button.grid(row=2, column=3)
 
         # self.__correct_answer = self.__enter_word.get()
-
-
-
 
         # if self.__was_inputted_word_legal:
         #     print("Arvo oli laillinen.")
@@ -185,6 +198,9 @@ class GameGUI:
         #         print("Sisälsi numeron!")
 
     def is_alpha(self):
+        """The method checks whether a string is alphabetic. First the method
+        gets the string from a tkinter Entry object. The word is then checked
+        with a built-in method of Python class string. """
 
         if not self.__enter_word.get().isalpha():
             print("Syötit muita kuin kirjaimia!!!")
@@ -258,7 +274,7 @@ class GameGUI:
         #         if i == index:
                 self.__word_appearance_counter += 1
 
-        self.__amount_of_quessed_letters += \
+        self.__amount_of_guessed_letters += \
             self.__word_appearance_counter
         self.was_move_winning_move()
 
@@ -360,20 +376,21 @@ class GameGUI:
         # list_of_correct_letters = []
         # for i in self.__correct_answer:
         #     self.__list_of_correct_letters.append(i)
-        if self.__amount_of_quessed_letters == len(
+        if self.__amount_of_guessed_letters == len(
                 self.__list_of_correct_letters):
             self.__has_word_been_guessed = True
         #     return True
         #
         # return False
 
-
-
-
     def quit(self):
         self.__main_window.destroy()
 
 def main():
+    """
+    Starts the tkinter program. The program is run totally inside the GUI class.
+    :return:
+    """
     ui = GameGUI()
 
 
