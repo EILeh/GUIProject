@@ -275,6 +275,10 @@ class GameGUI:
 
                 # if button in correct_answer, hirsipuu ei "kasva",
                 # vaan kyseinen kirjain paljastetaan muuttujasta correct_answer
+
+                # if button in correct_answer, the hanging tree doesn't grow,
+                # but the corresponding letter is revealed from the variable
+                # correct_answer
                 break
 
         for i in self.__correct_answer:
