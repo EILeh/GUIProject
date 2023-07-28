@@ -51,6 +51,7 @@ class GameGUI:
         self.__correct_words = ["koiruli", "kisse", "rät", "hevone"]
         self.__keyboard = {}
         self.__list_of_correct_letters = []
+        self.__single_letter_labels = []
 
         # Strings
         self.__correct_answer = ""
@@ -68,6 +69,7 @@ class GameGUI:
 
         if self.__was_inputted_word_legal:
             print("Arvo oli laillinen.")
+
 
         # self.__quit_button = Button(self.__main_window, text="QUIT",
         #                              command=self.quit)
@@ -99,6 +101,7 @@ class GameGUI:
         hasn't chosen a word yet. Doesn't take any external parameters, doesn't
         return anything (returns None implicitely).
         """
+
 
         self.__game_title = Label(self.__main_window, text="Hangman")
         self.__game_title.grid(row=0, columnspan=3)
@@ -252,6 +255,18 @@ class GameGUI:
                 current_column += 1
             current_column = 3
             current_row += 1
+
+        current_label_row = 3
+        current_label_column = 3
+
+        for letter in self.__correct_answer:
+
+            boi = Label(self.__main_window, text=letter)
+            boi.grid(row=current_label_row, column=current_label_column + 1)
+            current_label_column += 1
+
+        # [] [] [] [] [] [] [] [] [] []
+
         # current_column = 5
 
         # self.__button_q = Button(self.__main_window, text="Q")
@@ -288,6 +303,8 @@ class GameGUI:
         #     for i in self.__correct_answer:
         #         if i == index:
                 self.__word_appearance_counter += 1
+                # joku label -> configure -> kyseisen kirjain paljastetaan
+                # tietyltä i:n kohdalta (?)
 
         self.__amount_of_guessed_letters += \
             self.__word_appearance_counter
