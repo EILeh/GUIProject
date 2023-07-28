@@ -55,6 +55,7 @@ class GameGUI:
 
         # Strings
         self.__correct_answer = ""
+        self.__current_letter = ""
         self.__game_title = ""
 
         # tkinter objects
@@ -69,6 +70,7 @@ class GameGUI:
 
         if self.__was_inputted_word_legal:
             print("Arvo oli laillinen.")
+
 
 
         # self.__quit_button = Button(self.__main_window, text="QUIT",
@@ -256,14 +258,24 @@ class GameGUI:
             current_column = 3
             current_row += 1
 
+        self.hidden_word()
+
+    def hidden_word(self, i=""):
+
         current_label_row = 3
         current_label_column = 3
 
         for letter in self.__correct_answer:
 
+            self.__current_letter = letter
+
             boi = Label(self.__main_window, text="_")
             boi.grid(row=current_label_row, column=current_label_column + 1)
             current_label_column += 1
+
+            if self.__current_letter == i:
+                # boi = Label(self.__main_window, text=letter)
+                boi.configure(text=letter)
 
         # [] [] [] [] [] [] [] [] [] []
 
@@ -303,6 +315,9 @@ class GameGUI:
         #     for i in self.__correct_answer:
         #         if i == index:
                 self.__word_appearance_counter += 1
+
+                self.__current_letter = i
+                self.hidden_word(i)
                 # joku label -> configure -> kyseisen kirjain paljastetaan
                 # tietyltä i:n kohdalta (?)
 
