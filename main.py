@@ -46,12 +46,13 @@ class GameGUI:
         self.__list_length = 0
         self.__random_index_value = 0
         self.__word_appearance_counter = 0
+        self.__round = 0
 
         # Lists
+        self.__arvatut = []
         self.__correct_words = ["koiruli", "kisse", "rät", "hevone"]
         self.__keyboard = {}
         self.__list_of_correct_letters = []
-        self.__single_letter_labels = []
 
         # Strings
         self.__correct_answer = ""
@@ -61,6 +62,7 @@ class GameGUI:
         # tkinter objects
         self.__main_window = Tk()
         self.__enter_word = Entry()
+        self.__boi = Label()
 
         self.__list_length = len(self.__correct_words)
 
@@ -71,6 +73,7 @@ class GameGUI:
         if self.__was_inputted_word_legal:
             print("Arvo oli laillinen.")
 
+        self.__round = 0
 
 
         # self.__quit_button = Button(self.__main_window, text="QUIT",
@@ -265,17 +268,29 @@ class GameGUI:
         current_label_row = 3
         current_label_column = 3
 
+
         for letter in self.__correct_answer:
 
             self.__current_letter = letter
 
-            boi = Label(self.__main_window, text="_")
-            boi.grid(row=current_label_row, column=current_label_column + 1)
+
+            if self.__current_letter in self.__arvatut:
+               continue
+
+            elif self.__current_letter == i:
+                # boi = Label(self.__main_window, text=letter)
+                self.__boi.configure(text=self.__current_letter)
+
+                break
+
+            self.__boi = Label(self.__main_window, text="_")
+            self.__boi.grid(row=current_label_row, column=current_label_column + 1)
             current_label_column += 1
 
-            if self.__current_letter == i:
-                # boi = Label(self.__main_window, text=letter)
-                boi.configure(text=letter)
+
+
+
+
 
         # [] [] [] [] [] [] [] [] [] []
 
@@ -318,8 +333,11 @@ class GameGUI:
 
                 self.__current_letter = i
                 self.hidden_word(i)
+
                 # joku label -> configure -> kyseisen kirjain paljastetaan
                 # tietyltä i:n kohdalta (?)
+            self.__arvatut.append(self.__current_letter)
+        self.__round += 1
 
         self.__amount_of_guessed_letters += \
             self.__word_appearance_counter
