@@ -261,7 +261,7 @@ class GameGUI:
 
         for letter in self.__correct_answer:
 
-            boi = Label(self.__main_window, text=letter)
+            boi = Label(self.__main_window, text="_")
             boi.grid(row=current_label_row, column=current_label_column + 1)
             current_label_column += 1
 
