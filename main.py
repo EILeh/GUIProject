@@ -62,7 +62,7 @@ class GameGUI:
         # tkinter objects
         self.__main_window = Tk()
         self.__enter_word = Entry()
-        self.__boi = Label()
+        self.__input_label = Label()
 
         self.__list_length = len(self.__correct_words)
 
@@ -279,12 +279,12 @@ class GameGUI:
 
             elif self.__current_letter == i:
                 # boi = Label(self.__main_window, text=letter)
-                self.__boi.configure(text=self.__current_letter)
+                self.__input_label.configure(text=self.__current_letter)
 
                 break
 
-            self.__boi = Label(self.__main_window, text="_")
-            self.__boi.grid(row=current_label_row, column=current_label_column + 1)
+            self.__input_label = Label(self.__main_window, text="_")
+            self.__input_label.grid(row=current_label_row, column=current_label_column + 1)
             current_label_column += 1
 
 
