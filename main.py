@@ -231,8 +231,8 @@ class GameGUI:
 
     def generate_game_board(self):
 
-        for i in self.__correct_answer:
-            self.__list_of_correct_letters.append(i)
+        for letter in self.__correct_answer:
+            self.__list_of_correct_letters.append(letter)
 
         letters = [["q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "å"],
                    ["a", "s", "d", "f", "g", "h", "j", "k", "l", "ö", "ä"],
@@ -244,7 +244,6 @@ class GameGUI:
             if current_row == 5:
                 current_column = 5
 
-            # self.__another_button = Button(self.__main_window, text=)
             for char in row:
                 self.__new_button = Button(self.__main_window, text=char,
                                            command=self.on_button_click)
@@ -277,7 +276,7 @@ class GameGUI:
             if self.__current_letter in self.__arvatut:
                continue
 
-            elif self.__current_letter == i:
+            elif self.__current_letter == letter:
                 # boi = Label(self.__main_window, text=letter)
                 self.__input_label.configure(text=self.__current_letter)
 
