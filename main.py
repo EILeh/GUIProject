@@ -27,6 +27,8 @@ disabled and cannot be clicked again.
 
 from random import randrange
 from tkinter import *
+
+
 # from tkinter.constants import DISABLED, NORMAL
 
 
@@ -75,7 +77,6 @@ class GameGUI:
 
         self.__round = 0
 
-
         # self.__quit_button = Button(self.__main_window, text="QUIT",
         #                              command=self.quit)
         # self.__quit_button.grid(row=1, column=5)
@@ -106,7 +107,6 @@ class GameGUI:
         hasn't chosen a word yet. Doesn't take any external parameters, doesn't
         return anything (returns None implicitely).
         """
-
 
         self.__game_title = Label(self.__main_window, text="Hangman")
         self.__game_title.grid(row=0, columnspan=3)
@@ -231,8 +231,8 @@ class GameGUI:
 
     def generate_game_board(self):
 
-        for letter in self.__correct_answer:
-            self.__list_of_correct_letters.append(letter)
+        for i in self.__correct_answer:
+            self.__list_of_correct_letters.append(i)
 
         letters = [["q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "å"],
                    ["a", "s", "d", "f", "g", "h", "j", "k", "l", "ö", "ä"],
@@ -244,11 +244,12 @@ class GameGUI:
             if current_row == 5:
                 current_column = 5
 
+            # self.__another_button = Button(self.__main_window, text=)
             for char in row:
                 self.__new_button = Button(self.__main_window, text=char,
                                            command=self.on_button_click)
                 self.__new_button.config(command=lambda b=self.__new_button:
-                                         self.on_button_click(b))
+                self.on_button_click(b))
                 self.__new_button.grid(row=current_row + 1,
                                        column=current_column + 1)
                 self.__keyboard[char] = self.__new_button
@@ -267,29 +268,23 @@ class GameGUI:
         current_label_row = 3
         current_label_column = 3
 
-
         for letter in self.__correct_answer:
 
             self.__current_letter = letter
 
-
             if self.__current_letter in self.__arvatut:
-               continue
+                continue
 
-            elif self.__current_letter == letter:
+            elif self.__current_letter == i:
                 # boi = Label(self.__main_window, text=letter)
                 self.__input_label.configure(text=self.__current_letter)
 
                 break
 
             self.__input_label = Label(self.__main_window, text="_")
-            self.__input_label.grid(row=current_label_row, column=current_label_column + 1)
+            self.__input_label.grid(row=current_label_row,
+                                    column=current_label_column + 1)
             current_label_column += 1
-
-
-
-
-
 
         # [] [] [] [] [] [] [] [] [] []
 
@@ -324,10 +319,10 @@ class GameGUI:
 
         for i in self.__correct_answer:
             if i == index:
-        # if index in self.__correct_answer:
-        #     # self.__list_of_correct_letters.append(index)
-        #     for i in self.__correct_answer:
-        #         if i == index:
+                # if index in self.__correct_answer:
+                #     # self.__list_of_correct_letters.append(index)
+                #     for i in self.__correct_answer:
+                #         if i == index:
                 self.__word_appearance_counter += 1
 
                 self.__current_letter = i
@@ -364,7 +359,7 @@ class GameGUI:
 
         elif self.__amount_of_mistakes == 2:
             self.__second_image_label = Label(self.__main_window,
-                                             image=self.__second_image)
+                                              image=self.__second_image)
             self.__second_image_label.grid(row=7, columnspan=1)
             self.__second_image_label.configure(image=self.__second_image)
             self.__first_image_label.destroy()
@@ -378,7 +373,7 @@ class GameGUI:
 
         elif self.__amount_of_mistakes == 4:
             self.__fourth_image_label = Label(self.__main_window,
-                                             image=self.__fourth_image)
+                                              image=self.__fourth_image)
             self.__fourth_image_label.grid(row=7, columnspan=1)
             self.__fourth_image_label.configure(image=self.__fourth_image)
             self.__third_image_label.destroy()
@@ -399,14 +394,14 @@ class GameGUI:
 
         elif self.__amount_of_mistakes == 7:
             self.__seventh_image_label = Label(self.__main_window,
-                                             image=self.__seventh_image)
+                                               image=self.__seventh_image)
             self.__seventh_image_label.grid(row=7, columnspan=1)
             self.__seventh_image_label.configure(image=self.__seventh_image)
             self.__sixth_image_label.destroy()
 
         elif self.__amount_of_mistakes == 8:
             self.__eighth_image_label = Label(self.__main_window,
-                                             image=self.__eighth_image)
+                                              image=self.__eighth_image)
             self.__eighth_image_label.grid(row=7, columnspan=1)
             self.__eighth_image_label.configure(image=self.__eighth_image)
             self.__seventh_image_label.destroy()
@@ -427,14 +422,12 @@ class GameGUI:
 
         elif self.__amount_of_mistakes == 11:
             self.__eleventh_image_label = Label(self.__main_window,
-                                             image=self.__eleventh_image)
+                                                image=self.__eleventh_image)
             self.__eleventh_image_label.grid(row=7, columnspan=1)
             self.__eleventh_image_label.configure(image=self.__eleventh_image)
             self.__tenth_image_label.destroy()
             print("HÄVISIT")
             # quit()
-
-
 
     def was_move_a_winning_move(self):
         # list_of_correct_letters = []
@@ -452,6 +445,7 @@ class GameGUI:
         The method exits the progarm. Takes no external parameters.
         """
         self.__main_window.destroy()
+
 
 def main():
     """
