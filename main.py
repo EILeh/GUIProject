@@ -36,9 +36,9 @@ class GameGUI:
 
         # Booleans
         self.__has_word_been_guessed = False
-        # self.__is_button_clicked = False
-        self.__is_game_type_multiplayer = False
-        self.__was_inputted_word_legal = False
+
+        # Dictionaries
+        self.__keyboard = {}
 
         # Integers
         self.__amount_of_mistakes = 0
@@ -48,11 +48,11 @@ class GameGUI:
         self.__word_appearance_counter = 0
 
         # Lists
-        self.__correct_words = ["koiruli", "kisse", "rät", "hevone"]
-        self.__keyboard = {}
+        self.__correct_words = ["koira", "kissa", "hiiri", "hevonen", "kivi",
+                                "tuoli", "aurinko", "kuolema", "jäätelö",
+                                "kesäpäivä", "talviyö"]
         self.__list_of_correct_letters = []
-        self.__single_letter_labels = []
-        self.__arvatut = []
+        self.__correct_guesses = []
 
         # Strings
         self.__correct_answer = ""
@@ -62,7 +62,7 @@ class GameGUI:
         # tkinter objects
         self.__main_window = Tk()
         self.__enter_word = Entry()
-        self.__boi = Label()
+        self.__text_label_during_game = Label()
 
         self.__list_length = len(self.__correct_words)
 
@@ -70,19 +70,8 @@ class GameGUI:
 
         self.choose_game_type()
 
-        if self.__was_inputted_word_legal:
-            print("Arvo oli laillinen.")
-
-
-
-        # self.__quit_button = Button(self.__main_window, text="QUIT",
-        #                              command=self.quit)
-        # self.__quit_button.grid(row=1, column=5)
-
+        # Images
         self.__first_image = PhotoImage(file="pictures/1.png")
-        # self.__first_image_label = Label(self.__main_window,
-        #                                  image=self.__first_image)
-        # self.__first_image_label.grid(row=4, column=0)
         self.__second_image = PhotoImage(file="pictures/2.png")
         self.__third_image = PhotoImage(file="pictures/3.png")
         self.__fourth_image = PhotoImage(file="pictures/4.png")
@@ -106,7 +95,6 @@ class GameGUI:
         return anything (returns None implicitely).
         """
 
-
         self.__game_title = Label(self.__main_window, text="Hangman")
         self.__game_title.grid(row=0, columnspan=3)
 
@@ -118,8 +106,6 @@ class GameGUI:
                                     command=self.choose_your_own_word)
         self.__multiplayer.grid(row=1, column=2)
 
-    # def print_a_letter_by_clicking_a_button(self):
-    #     pass
 
     def generate_random_index_value(self):
         """
@@ -133,18 +119,13 @@ class GameGUI:
         implicitely).
         """
 
-        # self.__is_game_type_multiplayer = False
         self.__random_index_value = randrange(self.__list_length)
         self.__correct_answer = self.__correct_words[self.__random_index_value]
 
+        # POISTOOOON!!!
         print(f"Random index value: {self.__random_index_value}")
         print(self.__correct_words[self.__random_index_value])
 
-        # for i in self.__correct_answer:
-        #     self.__list_of_correct_letters.append(i)
-
-    # def testiprintteri(self):
-    #     print("NAPPIA MULTIPLAYER ON PAINETTU!")
 
     def check_if_string_is_legal(self):
         """
@@ -153,33 +134,27 @@ class GameGUI:
         characters in it. The alphabetic check is done using a seperate method
         Calls the gameboard generation method if the word was legal. Doesn't
         take any external parameters, doesn't return anything (returns None
-        implicitely).
+        implicitely). Modifies attribute boolean values instead.
         """
-
-        # print(f"Enter wordin arvo: {self.__enter_word.get()}")
 
         self.__correct_answer = self.__enter_word.get()
 
-        if not self.is_alpha():
+        if not self.is_alpha(self.__correct_answer):
             self.__enter_word.configure(bg='red')
-            self.__was_inputted_word_legal = False
+            # self.__was_input_word_legal = False
 
         # If the program gets here, the word had only letters in it
         else:
             self.__enter_word.configure(bg='white')
-            self.__was_inputted_word_legal = True
+            # self.__was_input_word_legal = True
 
-            if self.__was_inputted_word_legal:
-                self.generate_game_board()
-
-                # self.__singleplayer["state"] = "disabled"
-                # self.__multiplayer["state"] = "disabled"
-                self.__choose_button["state"] = "disabled"
-                self.__singleplayer["state"] = "disabled"
-                print(f"{self.__correct_answer}")
-                # for i in self.__correct_answer:
-                #     self.__list_of_correct_letters.append(i)
-                return
+            # if self.__was_input_word_legal:
+            self.generate_game_board()
+            self.__choose_button.destroy()
+            self.__singleplayer.destroy()
+            # POISTOOOON!!!
+            print(f"{self.__correct_answer}")
+            return
 
     def choose_your_own_word(self):
         """
@@ -192,37 +167,19 @@ class GameGUI:
         (returns None implicitely).
         """
 
-        # self.__is_game_type_multiplayer = True
-        # self.__enter_word = Entry()
-
         self.__enter_word.grid(row=2, columnspan=3)
 
-        # self.__correct_answer = self.__enter_word.get()
         self.__choose_button = Button(self.__main_window, text="Choose",
                                       command=self.check_if_string_is_legal)
         self.__choose_button.grid(row=2, column=3)
 
-        # self.__correct_answer = self.__enter_word.get()
-
-        # if self.__was_inputted_word_legal:
-        #     print("Arvo oli laillinen.")
-
-        # lista = []
-        # lista.append(self.__enter_word) # [sana]
-        #
-        # for char in temp_str:
-        #     if char.isdigit():
-        #         print("Sisälsi numeron!")
-
-    def is_alpha(self):
+    def is_alpha(self, word):
         """The method checks whether a string is alphabetic. First the method
         gets the string from a tkinter Entry object. The word is then checked
         with a built-in method of Python class string. Returns a boolean
         based on the answer. Doesn't take any external parameters."""
 
-        if not self.__enter_word.get().isalpha():
-            print("Syötit muita kuin kirjaimia!!!")
-
+        if not word.isalpha():
             return False
 
         else:
@@ -243,7 +200,6 @@ class GameGUI:
             if current_row == 5:
                 current_column = 5
 
-            # self.__another_button = Button(self.__main_window, text=)
             for char in row:
                 self.__new_button = Button(self.__main_window, text=char,
                                            command=self.on_button_click)
@@ -252,9 +208,8 @@ class GameGUI:
                 self.__new_button.grid(row=current_row + 1,
                                        column=current_column + 1)
                 self.__keyboard[char] = self.__new_button
-                self.__multiplayer["state"] = "disabled"
-                self.__singleplayer["state"] = "disabled"
-
+                self.__multiplayer.destroy()
+                self.__singleplayer.destroy()
                 self.__enter_word.destroy()
                 current_column += 1
 
@@ -265,6 +220,11 @@ class GameGUI:
         self.hidden_word()
 
     def hidden_word(self, i=""):
+        """This method reveals the clicked letter from the hidden word.
+
+        :param i:
+        :return:
+        """
 
         current_label_row = 3
         current_label_column = 3
@@ -274,20 +234,21 @@ class GameGUI:
         for index, letter in enumerate(self.__correct_answer):
             if letter == i:
                 # If the letter is guessed correctly, update the display immediately
-                boi = Label(self.__main_window, text=letter)
-            elif letter in self.__arvatut:
+                self.__text_label_during_game = Label(self.__main_window, text=letter)
+            elif letter in self.__correct_guesses:
                 # If the letter was guessed correctly before, show it as well
-                boi = Label(self.__main_window, text=letter)
+                self.__text_label_during_game = Label(self.__main_window, text=letter)
             else:
                 # For letters that have not been guessed yet, display an underscore
-                boi = Label(self.__main_window, text="_")
-            boi.grid(row=current_label_row, column=current_label_column + 1)
+                self.__text_label_during_game = Label(self.__main_window, text="_")
+            self.__text_label_during_game.grid(row=current_label_row,
+                                               column=current_label_column + 1)
             current_label_column += 1
 
 
         # If a new letter was guessed correctly, add it to the list of correctly guessed letters
-        if i not in self.__arvatut:
-            self.__arvatut.append(i)
+        if i not in self.__correct_guesses:
+            self.__correct_guesses.append(i)
 
 
 
