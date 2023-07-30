@@ -27,8 +27,6 @@ disabled and cannot be clicked again.
 
 from random import randrange
 from tkinter import *
-
-
 # from tkinter.constants import DISABLED, NORMAL
 
 
@@ -48,13 +46,13 @@ class GameGUI:
         self.__list_length = 0
         self.__random_index_value = 0
         self.__word_appearance_counter = 0
-        self.__round = 0
 
         # Lists
-        self.__arvatut = []
         self.__correct_words = ["koiruli", "kisse", "rät", "hevone"]
         self.__keyboard = {}
         self.__list_of_correct_letters = []
+        self.__single_letter_labels = []
+        self.__arvatut = []
 
         # Strings
         self.__correct_answer = ""
@@ -63,8 +61,8 @@ class GameGUI:
 
         # tkinter objects
         self.__main_window = Tk()
-        self.__multiplayer_input_label = Entry()
-        self.__label_with_clicked_letters = Label()
+        self.__enter_word = Entry()
+        self.__boi = Label()
 
         self.__list_length = len(self.__correct_words)
 
@@ -75,9 +73,16 @@ class GameGUI:
         if self.__was_inputted_word_legal:
             print("Arvo oli laillinen.")
 
-        self.__round = 0
+
+
+        # self.__quit_button = Button(self.__main_window, text="QUIT",
+        #                              command=self.quit)
+        # self.__quit_button.grid(row=1, column=5)
 
         self.__first_image = PhotoImage(file="pictures/1.png")
+        # self.__first_image_label = Label(self.__main_window,
+        #                                  image=self.__first_image)
+        # self.__first_image_label.grid(row=4, column=0)
         self.__second_image = PhotoImage(file="pictures/2.png")
         self.__third_image = PhotoImage(file="pictures/3.png")
         self.__fourth_image = PhotoImage(file="pictures/4.png")
@@ -100,6 +105,7 @@ class GameGUI:
         hasn't chosen a word yet. Doesn't take any external parameters, doesn't
         return anything (returns None implicitely).
         """
+
 
         self.__game_title = Label(self.__main_window, text="Hangman")
         self.__game_title.grid(row=0, columnspan=3)
@@ -152,15 +158,15 @@ class GameGUI:
 
         # print(f"Enter wordin arvo: {self.__enter_word.get()}")
 
-        self.__correct_answer = self.__multiplayer_input_label.get()
+        self.__correct_answer = self.__enter_word.get()
 
         if not self.is_alpha():
-            self.__multiplayer_input_label.configure(bg='red')
+            self.__enter_word.configure(bg='red')
             self.__was_inputted_word_legal = False
 
         # If the program gets here, the word had only letters in it
         else:
-            self.__multiplayer_input_label.configure(bg='white')
+            self.__enter_word.configure(bg='white')
             self.__was_inputted_word_legal = True
 
             if self.__was_inputted_word_legal:
@@ -186,7 +192,10 @@ class GameGUI:
         (returns None implicitely).
         """
 
-        self.__multiplayer_input_label.grid(row=2, columnspan=3)
+        # self.__is_game_type_multiplayer = True
+        # self.__enter_word = Entry()
+
+        self.__enter_word.grid(row=2, columnspan=3)
 
         # self.__correct_answer = self.__enter_word.get()
         self.__choose_button = Button(self.__main_window, text="Choose",
@@ -211,7 +220,7 @@ class GameGUI:
         with a built-in method of Python class string. Returns a boolean
         based on the answer. Doesn't take any external parameters."""
 
-        if not self.__multiplayer_input_label.get().isalpha():
+        if not self.__enter_word.get().isalpha():
             print("Syötit muita kuin kirjaimia!!!")
 
             return False
@@ -234,19 +243,22 @@ class GameGUI:
             if current_row == 5:
                 current_column = 5
 
+            # self.__another_button = Button(self.__main_window, text=)
             for char in row:
                 self.__new_button = Button(self.__main_window, text=char,
                                            command=self.on_button_click)
                 self.__new_button.config(command=lambda b=self.__new_button:
-                self.on_button_click(b))
+                                         self.on_button_click(b))
                 self.__new_button.grid(row=current_row + 1,
                                        column=current_column + 1)
                 self.__keyboard[char] = self.__new_button
                 self.__multiplayer["state"] = "disabled"
                 self.__singleplayer["state"] = "disabled"
 
-                self.__multiplayer_input_label.destroy()
+                self.__enter_word.destroy()
                 current_column += 1
+
+            # For aesthetics
             current_column = 3
             current_row += 1
 
@@ -256,25 +268,46 @@ class GameGUI:
 
         current_label_row = 3
         current_label_column = 3
+        # Initialize a list to store the indices of correctly guessed letters
+        # correct_indices = []
 
-        for letter in self.__correct_answer:
-
-            self.__current_letter = letter
-
-            if self.__current_letter in self.__arvatut:
-                continue
-
-            elif self.__current_letter == i:
-                self.__label_with_clicked_letters.configure(text=self.__current_letter)
-
-                break
-
-            self.__label_with_clicked_letters = Label(self.__main_window, text="_")
-            self.__label_with_clicked_letters.grid(row=current_label_row,
-                                                   column=current_label_column + 1)
+        for index, letter in enumerate(self.__correct_answer):
+            if letter == i:
+                # If the letter is guessed correctly, update the display immediately
+                boi = Label(self.__main_window, text=letter)
+            elif letter in self.__arvatut:
+                # If the letter was guessed correctly before, show it as well
+                boi = Label(self.__main_window, text=letter)
+            else:
+                # For letters that have not been guessed yet, display an underscore
+                boi = Label(self.__main_window, text="_")
+            boi.grid(row=current_label_row, column=current_label_column + 1)
             current_label_column += 1
 
+
+        # If a new letter was guessed correctly, add it to the list of correctly guessed letters
+        if i not in self.__arvatut:
+            self.__arvatut.append(i)
+
+
+
+
+
+
+        # [] [] [] [] [] [] [] [] [] []
+
+        # current_column = 5
+
+        # self.__button_q = Button(self.__main_window, text="Q")
+        # self.__button_q.grid()
+        #
+        # self.__button_w = Button(self.__main_window, text="W")
+        # self.__button_w.grid()
+
     def on_button_click(self, button):
+
+        # for i in self.__correct_answer:
+        #     self.__list_of_correct_letters.append(i)
 
         index = ""
         for index, btn in self.__keyboard.items():
@@ -294,19 +327,16 @@ class GameGUI:
 
         for i in self.__correct_answer:
             if i == index:
-                # if index in self.__correct_answer:
-                #     # self.__list_of_correct_letters.append(index)
-                #     for i in self.__correct_answer:
-                #         if i == index:
+        # if index in self.__correct_answer:
+        #     # self.__list_of_correct_letters.append(index)
+        #     for i in self.__correct_answer:
+        #         if i == index:
                 self.__word_appearance_counter += 1
 
                 self.__current_letter = i
                 self.hidden_word(i)
-
                 # joku label -> configure -> kyseisen kirjain paljastetaan
                 # tietyltä i:n kohdalta (?)
-            self.__arvatut.append(self.__current_letter)
-        self.__round += 1
 
         self.__amount_of_guessed_letters += \
             self.__word_appearance_counter
@@ -334,7 +364,7 @@ class GameGUI:
 
         elif self.__amount_of_mistakes == 2:
             self.__second_image_label = Label(self.__main_window,
-                                              image=self.__second_image)
+                                             image=self.__second_image)
             self.__second_image_label.grid(row=7, columnspan=1)
             self.__second_image_label.configure(image=self.__second_image)
             self.__first_image_label.destroy()
@@ -348,7 +378,7 @@ class GameGUI:
 
         elif self.__amount_of_mistakes == 4:
             self.__fourth_image_label = Label(self.__main_window,
-                                              image=self.__fourth_image)
+                                             image=self.__fourth_image)
             self.__fourth_image_label.grid(row=7, columnspan=1)
             self.__fourth_image_label.configure(image=self.__fourth_image)
             self.__third_image_label.destroy()
@@ -369,14 +399,14 @@ class GameGUI:
 
         elif self.__amount_of_mistakes == 7:
             self.__seventh_image_label = Label(self.__main_window,
-                                               image=self.__seventh_image)
+                                             image=self.__seventh_image)
             self.__seventh_image_label.grid(row=7, columnspan=1)
             self.__seventh_image_label.configure(image=self.__seventh_image)
             self.__sixth_image_label.destroy()
 
         elif self.__amount_of_mistakes == 8:
             self.__eighth_image_label = Label(self.__main_window,
-                                              image=self.__eighth_image)
+                                             image=self.__eighth_image)
             self.__eighth_image_label.grid(row=7, columnspan=1)
             self.__eighth_image_label.configure(image=self.__eighth_image)
             self.__seventh_image_label.destroy()
@@ -397,12 +427,14 @@ class GameGUI:
 
         elif self.__amount_of_mistakes == 11:
             self.__eleventh_image_label = Label(self.__main_window,
-                                                image=self.__eleventh_image)
+                                             image=self.__eleventh_image)
             self.__eleventh_image_label.grid(row=7, columnspan=1)
             self.__eleventh_image_label.configure(image=self.__eleventh_image)
             self.__tenth_image_label.destroy()
             print("HÄVISIT")
             # quit()
+
+
 
     def was_move_a_winning_move(self):
         # list_of_correct_letters = []
@@ -420,7 +452,6 @@ class GameGUI:
         The method exits the progarm. Takes no external parameters.
         """
         self.__main_window.destroy()
-
 
 def main():
     """
