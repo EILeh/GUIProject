@@ -54,7 +54,7 @@ appears a quit button that shuts the program once clicked.
 from random import randrange
 from tkinter import *
 import tkinter.font as font
-# from tkinter.constants import DISABLED, NORMAL
+
 
 MAX_LENGTH_FOR_WORD_TO_BE_GUESSED = 11
 FIRST_MISTAKE = 1
@@ -75,6 +75,7 @@ class GameGUI:
 
         # Booleans
         self.__has_word_been_guessed = False
+        self.__has_game_been_lost = False
 
         # Dictionaries
         self.__keyboard = {}
@@ -85,8 +86,6 @@ class GameGUI:
         self.__list_length = 0
         self.__random_index_value = 0
         self.__word_appearance_counter = 0
-        # self.__height = 500
-        # self.__width = 650
 
         # Lists
         self.__correct_guesses = []
@@ -105,22 +104,15 @@ class GameGUI:
         self.__main_window = Tk()
         self.__myfont = font.Font(family="Helvetica", size=16,
                                   weight="bold")
-        self.__enter_word = Entry()
+        self.__multiplayer_user_input_field = Entry()
         self.__text_label_during_game = Label(bg="black", fg="white")
 
         self.__list_length = len(self.__correct_words)
         self.__main_window.configure(bg="black")
-        # screenwidth = self.__main_window.winfo_screenwidth()
-        # screenheight = self.__main_window.winfo_screenheight()
-        #
-        # x = screenwidth/2 - self.__width/2
-        # y = screenheight/2 - self.__height/2
-        #
-        # self.__main_window.geometry('%dx%d+%d+%d' %
-        #                             (self.__width, self.__height, x, y))
 
+        # Window can't be resized because the objects have a static size,
+        # i.e they are not responsive
         self.__main_window.resizable(0,0)
-
 
         self.generate_random_index_value()
 
@@ -138,21 +130,19 @@ class GameGUI:
         return anything (returns None implicitely).
         """
 
+        # The game_title is placed on top of the window
         self.__game_title = self.__main_window.title("Hangman")
-        # self.__game_title.grid(row=0, columnspan=3)
 
         self.__singleplayer = Button(self.__main_window, text="Singleplayer",
                                      height=50, width=50,
-                                     command=self.generate_game_board)
+                                     command=self.generate_keyboard)
         # self.__singleplayer = Button(self.__main_window, text="Singleplayer",
-        #                              command=self.generate_game_board)
+        #                              command=self.generate_keyboard)
         self.__singleplayer.grid(row=1, column=0)
 
         self.__multiplayer = Button(self.__main_window, text="Multiplayer",
                                     height=50, width=50,
                                     command=self.choose_your_own_word)
-        # self.__multiplayer = Button(self.__main_window, text="Multiplayer",
-        #                             command=self.choose_your_own_word)
         self.__multiplayer.grid(row=1, column=2)
 
 
@@ -171,11 +161,6 @@ class GameGUI:
         self.__random_index_value = randrange(self.__list_length)
         self.__correct_answer = self.__correct_words[self.__random_index_value]
 
-        # POISTOOOON!!!
-        print(f"Random index value: {self.__random_index_value}")
-        print(self.__correct_words[self.__random_index_value])
-
-
     def check_if_string_is_legal(self):
         """
         The method checks whether a string is legal. The word is legal
@@ -186,27 +171,22 @@ class GameGUI:
         implicitely). Modifies attribute boolean values instead.
         """
 
-        self.__correct_answer = self.__enter_word.get().upper()
+        self.__correct_answer = (
+            self.__multiplayer_user_input_field.get().upper())
 
         if not self.is_alpha(self.__correct_answer):
-            self.__enter_word.configure(bg='red')
-            # self.__was_input_word_legal = False
+            self.__multiplayer_user_input_field.configure(bg='red')
 
         elif len(self.__correct_answer) > MAX_LENGTH_FOR_WORD_TO_BE_GUESSED:
-            self.__enter_word.configure(bg='red')
+            self.__multiplayer_user_input_field.configure(bg='red')
 
         # If the program gets here, the word had only letters in it
         else:
-            self.__enter_word.configure(bg='white')
-            # self.__was_input_word_legal = True
+            self.__multiplayer_user_input_field.configure(bg='white')
 
-            # if self.__was_input_word_legal:
-            self.generate_game_board()
+            self.generate_keyboard()
             self.__choose_button.destroy()
             self.__singleplayer.destroy()
-            # POISTOOOON!!!
-            print(f"{self.__correct_answer}")
-            return
 
     def choose_your_own_word(self):
         """
@@ -219,10 +199,9 @@ class GameGUI:
         (returns None implicitely).
         """
 
-        self.__enter_word.grid(row=1, column=1)
+        self.__multiplayer_user_input_field.grid(row=1, column=1)
         self.__singleplayer.destroy()
         self.__multiplayer.destroy()
-        # self.__multiplayer.config(row=2, columnspan=3)
         self.__choose_button = Button(self.__main_window, text="Choose",
                                       command=self.check_if_string_is_legal)
         self.__choose_button.grid(row=1, column=2)
@@ -241,18 +220,16 @@ class GameGUI:
         else:
             return True
 
-    def generate_game_board(self):
+    def generate_keyboard(self):
         """
-        Generates the keyboard
-        :return:
+        Generates the keyboard and how it is positioned on the screen. Goes
+        through the list that has lists inside of it and creates a keyboard
+        from it. Keyboard's buttons are created from the letters in the list.
         """
 
         for i in self.__correct_answer:
             self.__list_of_correct_letters.append(i)
 
-        # letters = [["q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "å"],
-        #            ["a", "s", "d", "f", "g", "h", "j", "k", "l", "ö", "ä"],
-        #            ["z", "x", "c", "v", "b", "n", "m"]]
         letters = [["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", "Å"],
                    ["A", "S", "D", "F", "G", "H", "J", "K", "L", "Ö", "Ä"],
                     ["Z", "X", "C", "V", "B", "N", "M"]]
@@ -265,18 +242,18 @@ class GameGUI:
 
             for char in row:
                 self.__new_button = Button(self.__main_window, text=char,
-                                           command=self.on_button_click)
+                                           command=self.on_letter_button_click)
                 self.__new_button.config(bg="black", fg="white",
                                          font=self.__myfont, height=2, width=2,
                                          command=lambda b=self.__new_button:
-                                         self.on_button_click(b))
+                                         self.on_letter_button_click(b))
                 self.__new_button.grid(row=current_row + 1,
                                        column=current_column + 1,
                                        sticky="NESW")
                 self.__keyboard[char] = self.__new_button
                 self.__multiplayer.destroy()
                 self.__singleplayer.destroy()
-                self.__enter_word.destroy()
+                self.__multiplayer_user_input_field.destroy()
                 self.__main_window.columnconfigure(current_column, weight=1)
                 self.__main_window.rowconfigure(current_row, weight=1)
                 current_column += 1
@@ -285,26 +262,22 @@ class GameGUI:
             current_column = 1
             current_row += 1
 
-        self.hidden_word()
+        self.check_if_letter_can_be_shown()
 
-    def hidden_word(self, i=""):
+    def check_if_letter_can_be_shown(self, i=""):
         """
         This method reveals the clicked letter from the hidden word. It saves
-        the letter and its' index value by creating tuples. Correctly clicked
+        the letter and its index value by creating tuples. Correctly clicked
         letters can be revealed from the word.
-
-        :param i:
-        :return:
         """
 
         current_label_row = 10
         current_label_column = 3
-        # Initialize a list to store the indices of correctly guessed letters
-        # correct_indices = []
 
         for index, letter in enumerate(self.__correct_answer):
             if letter == i:
-                # If the letter is guessed correctly, update the display immediately
+                # If the letter is guessed correctly, update the
+                # display immediately
                 self.__text_label_during_game = Label(self.__main_window,
                                                       text=letter, bg="black",
                                                       fg="white",
@@ -316,7 +289,8 @@ class GameGUI:
                                                       fg="white",
                                                       font=("Helvetica", 16))
             else:
-                # For letters that have not been guessed yet, display an underscore
+                # For letters that have not been guessed yet, display
+                # an underscore
                 self.__text_label_during_game = Label(self.__main_window,
                                                       text="__", bg="black",
                                                       fg="white",
@@ -327,83 +301,72 @@ class GameGUI:
             current_label_column += 1
 
 
-        # If a new letter was guessed correctly, add it to the list of correctly guessed letters
+        # If a new letter was guessed correctly, add it to the list of correctly
+        # guessed letters
         if i not in self.__correct_guesses:
             self.__correct_guesses.append(i)
-
-
-
-
-
-
-        # [] [] [] [] [] [] [] [] [] []
-
-        # current_column = 5
-
-        # self.__button_q = Button(self.__main_window, text="Q")
-        # self.__button_q.grid()
-        #
-        # self.__button_w = Button(self.__main_window, text="W")
-        # self.__button_w.grid()
-
-    def on_button_click(self, button):
-        """Handles button click by
-        :param button:
-        :return:
+    def on_letter_button_click(self, button):
+        """
+        The method is called when a letter is clicked. It iterates over the
+        keyboard and checks for the clicked button to disable it (each button
+        can be pressed only once). Keeps track of clicked buttons and also
+        checks if the game has finished. Takes the button as a object as an
+        external parameter, doesn't return anything (returns None implicitely).
         """
 
-        # for i in self.__correct_answer:
-        #     self.__list_of_correct_letters.append(i)
-
         index = ""
+        # The loop iterates over the keyboard and searches for the button that
+        # was clicked
         for index, btn in self.__keyboard.items():
+            # If the current button in a loop matches the clicked button,
+            # it will be disabled. Disabling the button turns the font color
+            # to grey and makes it impossible to click.
             if btn == button:
                 # self.__is_button_clicked = True
                 btn["state"] = "disabled"
-                print(f"Button {index} was clicked.")
-                # self.__enter_word.con
-
-                # if button in correct_answer, hirsipuu ei "kasva",
-                # vaan kyseinen kirjain paljastetaan muuttujasta correct_answer
 
                 # if button in correct_answer, the hanging tree doesn't grow,
                 # but the corresponding letter is revealed from the variable
                 # correct_answer
                 break
 
+        # Checks how many times the clicked letter appears in the word.
         for i in self.__correct_answer:
             if i == index:
-        # if index in self.__correct_answer:
-        #     # self.__list_of_correct_letters.append(index)
-        #     for i in self.__correct_answer:
-        #         if i == index:
                 self.__word_appearance_counter += 1
 
                 self.__current_letter = i
-                self.hidden_word(i)
-                # joku label -> configure -> kyseisen kirjain paljastetaan
-                # tietyltä i:n kohdalta (?)
+                self.check_if_letter_can_be_shown(i)
 
+        # Adds the information of how many times the clicked letter appears
+        # in the word that is being guessed, to the variable
+        # self.__amount_of_guessed_letters
         self.__amount_of_guessed_letters += \
             self.__word_appearance_counter
+
+        # Checks if the clicked letter was the last letter that wasn't
+        # guessed yet.
         self.was_move_a_winning_move()
 
-        if self.__has_word_been_guessed:
+        if self.__has_word_been_guessed and not self.__has_game_been_lost:
             self.game_won()
 
+        # If variable self.__word_appearance_counter is over zero,
+        # it is reset back to zero that the counter can count how many times
+        # another letter appears in the word.
         elif self.__word_appearance_counter > 0:
-
             self.__word_appearance_counter = 0
 
         else:
             self.__amount_of_mistakes += 1
             self.check_amount_of_mistakes()
-            # quit()
 
     def check_amount_of_mistakes(self):
-        """Creates a graphic of the hangman according to the player's
-        mistakes. Once there is 11 mistakes, the will end and no more letters
-        can be guessed."""
+        """
+        Creates a graphic of the hangman according to the player's
+        mistakes. Once there is 11 mistakes, the game will end and no more
+        letters can be guessed.
+        """
 
         if self.__amount_of_mistakes == FIRST_MISTAKE:
             self.__hangman_graph_label = Label(self.__main_window, text=" "
@@ -499,10 +462,16 @@ class GameGUI:
                                                     "  |      / \\\n"
                                                     " |         \n"
                                                     " |___   ")
-            print("HÄVISIT!!")
+            self.__keyboard["state"] = "disabled"
+            self.__has_game_been_lost = True
             self.game_lost()
 
     def game_won(self):
+        """
+        Creates a window on top of the main window that has a text indicating
+        victory and a button to quit the game. Doesn't take any external
+        parameters, doesn't return anything (returns None implicitely).
+        """
         end_screen = Toplevel(self.__main_window)
         end_title = Label(end_screen, text="Voitit pelin!",
                           font=("Helvetica", 16))
@@ -512,6 +481,11 @@ class GameGUI:
         quit_button.grid(row=1, column=0)
 
     def game_lost(self):
+        """
+        Creates a window on top of the main window that has a text indicating
+        victory and a button to quit the game. Doesn't take any external
+        parameters, doesn't return anything (returns None implicitely).
+        """
         end_screen = Toplevel(self.__main_window)
         end_title = Label(end_screen, text="Hävisit pelin!",
                           font=("Helvetica", 16))
